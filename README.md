@@ -7,10 +7,10 @@ This repo is for experimenting various cases with golang, grpc and protobufs.
 1. Golang protobufs
 2. Simple Grpc client server
 3. Grpc APIs
-  a. Unary
-  b. Server Stream
-  c. Client Stream
-  d. Bi-directional streaming
+    -  Unary
+    -  Server Stream
+    -  Client Stream
+    -  Bi-directional streaming
 
 ## Why?
 
