@@ -19,3 +19,10 @@ This repo is for experimenting various cases with golang, grpc and protobufs.
 3. Native http2 support
 4. Scalable
 5. JSONs vs ProtoBufs for serializing data
+
+## Examples 
+
+1. Just basic proto files
+2. Simple Client server
+3. Simple Unary request/response model
+4. Complex Unary request/response model
