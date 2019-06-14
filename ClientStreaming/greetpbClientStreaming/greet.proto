@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package greetServerStream;
+package greetClientStream;
 
-option go_package = "greetpbServerStream";
+option go_package = "greetpbClientStream";
 
 message Greeting {
   string first_name = 1;
@@ -18,5 +18,5 @@ message GreetResponse {
 }
 
 service GreetService{
-  rpc LongGreet(stream GreetRequest) returns (GreetResponse) {};
+  rpc GreetStream(stream GreetRequest) returns (GreetResponse) {};
 }
