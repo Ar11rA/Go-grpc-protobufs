@@ -26,3 +26,5 @@ This repo is for experimenting various cases with golang, grpc and protobufs.
 2. Simple Client server
 3. Simple Unary request/response model
 4. Complex Unary request/response model
+5. Simple Server streaming greet example
+6. Simple Client streaming greet example
