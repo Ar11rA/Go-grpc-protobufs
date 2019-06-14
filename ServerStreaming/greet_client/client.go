@@ -2,26 +2,36 @@ package main
 
 import (
 	"context"
-	"go/protobufs/Unary/greetpbUnary"
+	greetpbServerStream "go/protobufs/ServerStreaming/greetpbServerStreaming"
+	"io"
 	"log"
 
 	"google.golang.org/grpc"
 )
 
-func getGreeting(client greetpbUnary.GreetServiceClient) {
-	request := &greetpbUnary.GreetRequest{
-		Greeting: &greetpbUnary.Greeting{
+func getGreetStream(client greetpbServerStream.GreetServiceClient) {
+	request := &greetpbServerStream.GreetRequest{
+		Greeting: &greetpbServerStream.Greeting{
 			FirstName: "firstName",
 			LastName:  "lastName",
 		},
 	}
-	response, err := client.Greet(context.Background(), request)
+	stream, err := client.GreetStream(context.Background(), request)
 
 	if err != nil {
 		log.Fatalf("Failed to call greet %v", err)
 	}
 
-	log.Printf("Response from greet %v", response.Result)
+	for {
+		msg, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Failed to receive stream")
+		}
+		log.Printf("Response from stream %v", msg.GetResult())
+	}
 }
 
 func main() {
@@ -32,7 +42,7 @@ func main() {
 
 	defer conn.Close()
 
-	client := greetpbUnary.NewGreetServiceClient(conn)
+	client := greetpbServerStream.NewGreetServiceClient(conn)
 	log.Println("Client running", client)
-	getGreeting(client)
+	getGreetStream(client)
 }

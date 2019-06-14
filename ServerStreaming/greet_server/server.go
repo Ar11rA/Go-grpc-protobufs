@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
 	greetpbServerStream "go/protobufs/ServerStreaming/greetpbServerStreaming"
+	"time"
 
 	"log"
 	"net"
@@ -13,16 +13,21 @@ import (
 // Server ...
 type Server struct{}
 
-// Greet ...
-func (*Server) Greet(ctx context.Context, req *greetpbServerStream.GreetRequest) (*greetpbServerStream.GreetResponse, error) {
+// GreetStream ...
+func (*Server) GreetStream(req *greetpbServerStream.GreetRequest, stream greetpbServerStream.GreetService_GreetStreamServer) error {
 	log.Printf("Greet function invoked with req %v", req)
 	firstName := req.GetGreeting().GetFirstName()
 	lastName := req.GetGreeting().GetLastName()
 	greeting := "Hello " + firstName + " " + lastName
-	greetResponse := &greetpbServerStream.GreetResponse{
-		Result: greeting,
+	for _, letter := range greeting {
+		greetResponse := &greetpbServerStream.GreetResponse{
+			Result: string(letter),
+		}
+		stream.Send(greetResponse)
+		time.Sleep(1000 * time.Millisecond)
 	}
-	return greetResponse, nil
+
+	return nil
 }
 
 func main() {
